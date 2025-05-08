@@ -1,0 +1,13 @@
+
+Q1)At posedge of clock if signal A is asserted, then in the next cycle signal B should go high & signal C should be stable. The signal C should not change until signal B goes low. Once the Signal B goes low in the same cycle the signal C should change.
+Solution:
+// Sequence S1: C should be stable for one or more cycles, intersecting with B for one or more
+sequence S1;
+($stable (c) endsequence
+ICO Nycles
+
+//Property ABC: If A rises, then in the next cycle, B should be true, C should be stable,
+// followed by the condition specified in S1. After S1, in the next cycle, C should change and B should fall.
+property property_A_B_C;
+@ (posedge clk)
+$rose (a) => b && $stable (c) ##1 S1 ##1 $changed (c) && $fell (b); endproperty
